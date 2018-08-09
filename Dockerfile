@@ -2,11 +2,10 @@ FROM mhart/alpine-node:latest
 
 WORKDIR /app
 
-COPY package.json .
-COPY package-lock.json .
+COPY . /app
 
 RUN apk add --no-cache git && \
-    npm install && \
+    npm install --unsafe-perm && \
     apk del git
 
 COPY . .
