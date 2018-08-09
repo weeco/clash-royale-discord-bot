@@ -12,8 +12,8 @@ export class RedisService extends Redis {
   /**
    * Call Parent class constructor
    */
-  constructor(config: ConfigService) {
-    super(config.redis.url);
+  constructor(private configService: ConfigService) {
+    super(configService.redis.url);
     this.logger = new AppLogger('RedisService');
     this.logger.info('Connecting to redis server');
     this.on('connect', this.onConnected);
@@ -64,7 +64,7 @@ export class RedisService extends Redis {
   }
 
   private onError(err: Error): void {
-    this.logger.error('Connection error with redis', err);
+    this.logger.error(`Connection error with redis (redis url: ${this.configService.redis.url})`, err);
   }
 
   private onClosed(): void {
