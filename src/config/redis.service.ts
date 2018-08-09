@@ -13,7 +13,7 @@ export class RedisService extends Redis {
    * Call Parent class constructor
    */
   constructor(private configService: ConfigService) {
-    super(configService.redis.url);
+    super({ host: configService.redis.host, db: configService.redis.db, port: configService.redis.port });
     this.logger = new AppLogger('RedisService');
     this.logger.info('Connecting to redis server');
     this.on('connect', this.onConnected);
