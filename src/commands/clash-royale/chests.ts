@@ -1,6 +1,6 @@
 import { Command, Message } from '@yamdbf/core';
 import commaNumber from 'comma-number';
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, Permissions } from 'discord.js';
 import prettyHrtime from 'pretty-hrtime';
 import { CardHelper, ICardDetails, ILeagueStatistics, PlayerProfile, UpcomingChest, UpcomingChests } from 'wrap-royale';
 import { ClashRoyaleClient } from '../../client/clash-royale-client';
@@ -31,7 +31,7 @@ const chestThumbnails: ChestThumbnails = {
 
 // tslint:disable-next-line:no-default-export
 export default class extends Command<ClashRoyaleClient> {
-  private logger: AppLogger = new AppLogger('ClashRoyaleChestsCommand');
+  private logger: AppLogger = new AppLogger('ChestsCommand');
 
   public constructor() {
     super({
@@ -43,12 +43,15 @@ export default class extends Command<ClashRoyaleClient> {
   }
 
   public async action(message: Message, [hashtagArg]: string[]): Promise<Message | Message[]> {
+    message.channel.startTyping();
     const startWatch: [number, number] = process.hrtime();
     let hashtag: string;
     try {
       hashtag = await ParseHelper.tryParseHashtag(message, hashtagArg, this.client.userSettings);
     } catch (err) {
-      message.reply(err.message);
+      message.channel.stopTyping();
+
+      return message.reply(err.message);
     }
 
     try {

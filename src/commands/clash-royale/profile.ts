@@ -10,7 +10,7 @@ import { ParseHelper } from '../../util/parse-helper';
 
 // tslint:disable-next-line:no-default-export
 export default class extends Command<ClashRoyaleClient> {
-  private logger: AppLogger = new AppLogger('ClashRoyaleProfileCommand');
+  private logger: AppLogger = new AppLogger('ProfileCommand');
 
   public constructor() {
     super({
@@ -22,12 +22,15 @@ export default class extends Command<ClashRoyaleClient> {
   }
 
   public async action(message: Message, [hashtagArg]: string[]): Promise<Message | Message[]> {
+    message.channel.startTyping();
     const startWatch: [number, number] = process.hrtime();
     let hashtag: string;
     try {
       hashtag = await ParseHelper.tryParseHashtag(message, hashtagArg, this.client.userSettings);
     } catch (err) {
-      message.reply(err.message);
+      message.channel.stopTyping();
+
+      return message.reply(err.message);
     }
 
     try {

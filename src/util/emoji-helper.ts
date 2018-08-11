@@ -1,19 +1,18 @@
 import { Emoji } from 'discord.js';
-import { RedisService } from '../config/redis.service';
+import { EmojiStorage } from '../storages/emoji-storage';
 import { AppLogger } from './app-logger';
 
 /**
  * Helper class for Emojis in Discord
  */
 export class EmojiHelper {
-  private emojiMap: Map<string, Emoji> = new Map();
   private logger: AppLogger = new AppLogger('EmojiHelper');
 
-  public constructor(private redis: RedisService) {}
+  public constructor(private emojiStorage: EmojiStorage) {}
 
   public getEmojiString(emojiName: string): string {
     try {
-      const emojiObj: Emoji = this.emojiMap.get(emojiName);
+      const emojiObj: Emoji = this.emojiStorage.emojiMap.get(emojiName);
 
       return `<:${emojiObj.name}:${emojiObj.id}>`;
     } catch (err) {
@@ -47,10 +46,5 @@ export class EmojiHelper {
       .replace('goldenchest', 'goldchest');
 
     return this.getEmojiString(chestEmojiName);
-  }
-
-  public async init(): Promise<void> {
-    const emojis: Emoji[] = await this.redis.getEmojis();
-    emojis.map((x: Emoji) => this.emojiMap.set(x.name, x));
   }
 }

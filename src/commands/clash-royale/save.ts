@@ -5,7 +5,7 @@ import { AppLogger } from '../../util/app-logger';
 
 // tslint:disable-next-line:no-default-export
 export default class extends Command<ClashRoyaleClient> {
-  private logger: AppLogger = new AppLogger('ClashRoyaleSaveCommand');
+  private logger: AppLogger = new AppLogger('SaveCommand');
 
   public constructor() {
     super({

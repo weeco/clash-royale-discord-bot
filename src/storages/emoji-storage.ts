@@ -2,11 +2,11 @@ import { Emoji } from 'discord.js';
 import { RequestAPI, RequestResponse, RequiredUriUrl } from 'request';
 import requestPromise from 'request-promise';
 import { ConfigService } from '../config/config.service.';
-import { RedisService } from '../config/redis.service';
 import { AppLogger } from '../util/app-logger';
 import { sleep } from '../util/sleep';
 
 export class EmojiStorage {
+  public emojiMap: Map<string, Emoji> = new Map();
   private readonly emojiServers: string[] = [
     '303593339175960577',
     '303594018468528138',
@@ -19,9 +19,8 @@ export class EmojiStorage {
   ];
   private apiRequest: RequestAPI<requestPromise.RequestPromise, requestPromise.RequestPromiseOptions, RequiredUriUrl>;
   private logger: AppLogger;
-  private emojiMap: Map<string, Emoji> = new Map();
 
-  constructor(private config: ConfigService, private redis: RedisService) {
+  constructor(config: ConfigService) {
     this.logger = new AppLogger('EmojiStorage');
     this.apiRequest = requestPromise.defaults({
       baseUrl: 'https://discordapp.com/api/v6',
@@ -43,21 +42,16 @@ export class EmojiStorage {
   /**
    * Fetch all emojis in the given guilds directly from the Discord API
    */
-  public async fetchAvailableEmojis(): Promise<string> {
+  public async fetchAvailableEmojis(): Promise<void> {
     this.logger.info('Fetching list of available emojis');
-    let cachedEmojis: Emoji[] = [];
     for (const guildId of this.emojiServers) {
       const emojis: Emoji[] = await this.requestEmojis(guildId);
-      cachedEmojis = cachedEmojis.concat(emojis);
+      emojis.map((x: Emoji) => this.emojiMap.set(x.name, x));
       this.logger.info(
-        `Fetched available emojis for guild '${guildId}', found and upserted '${emojis.length}' emojis into redis.`
+        `Fetched available emojis for guild '${guildId}', found and upserted '${emojis.length}' emojis into Map.`
       );
     }
-    this.logger.info(
-      `Successfully fetched all available emojis. In total '${cachedEmojis.length}' emojis have been fetched`
-    );
-
-    return this.redis.setEmojis(cachedEmojis);
+    this.logger.info(`Successfully fetched '${this.emojiMap.size}' emojis.`);
   }
 
   /**
