@@ -38,8 +38,8 @@ export class ClashRoyaleClient extends Client {
     this.on('error', this.onDiscordError);
     this.on('disconnect', this.onDisconnect);
     this.on('reconnecting', this.onReconnecting);
-    this.on('guildCreate', this.onGuildAction);
-    this.on('guildDelete', this.onGuildAction);
+    this.on('guildCreate', this.onGuildJoined);
+    this.on('guildDelete', this.onGuildDeleted);
     this.on('guildUnavailable', this.onGuildUnavailable);
   }
 
@@ -57,13 +57,28 @@ export class ClashRoyaleClient extends Client {
   /**
    * Log guild join/leave to guild logging channel
    */
-  private onGuildAction(guild: Guild, joined: boolean = true): void {
+  private onGuildJoined(guild: Guild): void {
     const logChannel: TextChannel = <TextChannel>this.channels.get(this.config.discord.adminChannelId);
     const embed: MessageEmbed = new MessageEmbed()
-      .setColor(joined ? 8450847 : 13091073)
+      .setColor(8450847)
       .setAuthor(`${guild.name} (${guild.id})`, guild.iconURL())
-      .setFooter(joined ? 'Joined guild' : 'Left guild')
+      .setFooter('Joined guild')
       .setDescription(`Guildmembers: ${guild.memberCount}`)
+      .setTimestamp();
+
+    logChannel.send({ embed });
+  }
+
+  /**
+   * Log guild join/leave to guild logging channel
+   */
+  private onGuildDeleted(guild: Guild): void {
+    const logChannel: TextChannel = <TextChannel>this.channels.get(this.config.discord.adminChannelId);
+    const embed: MessageEmbed = new MessageEmbed()
+      .setColor(13091073)
+      .setAuthor(`${guild.name} (Guildmembers: ${guild.memberCount})`, guild.iconURL())
+      .setFooter('Left guild')
+      .setDescription(`Joined at: ${guild.joinedAt.toLocaleDateString('en-US')}`)
       .setTimestamp();
 
     logChannel.send({ embed });
