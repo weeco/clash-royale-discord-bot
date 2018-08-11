@@ -21,6 +21,7 @@ export class ClashRoyaleClient extends Client {
       provider: Providers.MySQLProvider(config.mysql.url),
       dmHelp: true,
       commandsDir: './dist/commands',
+      pause: true,
       owner: ['372161181080748038'] // weeco
     });
 
