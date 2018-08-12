@@ -10,7 +10,7 @@ export namespace EmbedHelper {
    * Sets the MessageEmbed footer.
    */
   export function setCommonFooter(embed: MessageEmbed, info: string): void {
-    embed.setFooter(`Community CR Bot - ${info}`, 'https://www.clashcrown.com/img/clashcrown-circle.png');
+    embed.setFooter(`Community CR Bot - ${info}`, 'https://storage.googleapis.com/clash-royale/stat-bot-pfp.png');
   }
 
   /**
@@ -21,7 +21,6 @@ export namespace EmbedHelper {
       `${profile.name} #${profile.tag}`, // Player Username & #Tag
       profile.arena.getArenaDetails().iconUrls.small, // Arena Icon
       `https://statsroyale.com/profile/${profile.tag}`
-    ); // ClashCrown URL
   }
 
   /**
