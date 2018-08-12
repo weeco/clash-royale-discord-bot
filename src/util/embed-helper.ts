@@ -19,7 +19,7 @@ export namespace EmbedHelper {
   export function setCommonAuthor(embed: MessageEmbed, profile: PlayerProfile): void {
     embed.setAuthor(
       `${profile.name} #${profile.tag}`, // Player Username & #Tag
-      profile.arena.getArenaDetails().iconUrls.small, // Arena Icon
+      profile.arena.getArenaDetails().iconUrls.large, // Arena Icon
       `https://statsroyale.com/profile/${profile.tag}`
     );
   }
