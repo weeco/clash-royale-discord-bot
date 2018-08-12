@@ -21,6 +21,7 @@ export namespace EmbedHelper {
       `${profile.name} #${profile.tag}`, // Player Username & #Tag
       profile.arena.getArenaDetails().iconUrls.small, // Arena Icon
       `https://statsroyale.com/profile/${profile.tag}`
+    );
   }
 
   /**
