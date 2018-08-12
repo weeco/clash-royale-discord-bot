@@ -9,6 +9,7 @@ export default class extends Command<Client> {
       desc: 'Get an invite url for this bot',
       usage: '<prefix>invite'
     });
+    this.disable();
   }
 
   public action(message: Message): void {
