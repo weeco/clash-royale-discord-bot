@@ -7,7 +7,8 @@ export default class extends Command<Client> {
     super({
       name: 'invite',
       desc: 'Get an invite url for this bot',
-      usage: '<prefix>invite'
+      usage: '<prefix>invite',
+      group: 'misc'
     });
     this.disable();
   }

@@ -15,7 +15,8 @@ async function bootstrap(): Promise<void> {
     const manager: ShardingManager = new ShardingManager('./dist/shard.js', {
       totalShards: config.discord.shardCount,
       token: config.discord.token,
-      shardArgs: []
+      shardArgs: [],
+      respawn: true
     });
     manager.spawn();
   } else {

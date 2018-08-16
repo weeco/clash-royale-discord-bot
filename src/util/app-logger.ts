@@ -18,19 +18,19 @@ export class AppLogger {
     });
   }
 
-  public log(message: string): void {
-    this.logger.log('info', message);
+  public log(message: string, trace?: {}): void {
+    this.logger.log('info', message, trace);
   }
 
-  public warn(message: string): void {
-    this.logger.warn(message);
+  public warn(message: string, trace?: {}): void {
+    this.logger.warn(message, trace);
   }
 
-  public info(message: string): void {
-    this.logger.info(message);
+  public info(message: string, trace?: {}): void {
+    this.logger.info(message, trace);
   }
 
   public error(message: string, trace?: {} | string): void {
-    this.logger.error(message, { trace });
+    this.logger.error(message, trace);
   }
 }

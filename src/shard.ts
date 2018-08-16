@@ -15,11 +15,8 @@ async function bootstrap(): Promise<void> {
 
 const errRegex: RegExp = /ETIMEDOUT|getaddrinfo|Something took too long to do/;
 process.on('unhandledRejection', (reason: Error | string) => {
-  if (errRegex.test(<string>reason)) {
-    process.exit(200);
-  } else {
-    logger.error('Received unhandled rejection in shard', reason);
-  }
+  logger.error('Received unhandled rejection in shard', reason);
+  process.exit(200);
 });
 
 bootstrap();

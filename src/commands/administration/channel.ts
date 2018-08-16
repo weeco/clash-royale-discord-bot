@@ -1,5 +1,5 @@
 import { Command, GuildSettings, Message } from '@yamdbf/core';
-import { Collection, TextChannel } from 'discord.js';
+import { Collection, Permissions, TextChannel } from 'discord.js';
 import { ClashRoyaleClient } from '../../client/clash-royale-client';
 import { AppLogger } from '../../util/app-logger';
 
@@ -16,7 +16,8 @@ export default class extends Command<ClashRoyaleClient> {
         "If you don't mention any channels, the channel restrictions will be reset.",
       usage: '<prefix>channel #channel-a #channel-b',
       group: 'Administration',
-      guildOnly: true
+      guildOnly: true,
+      callerPermissions: [Permissions.FLAGS.ADMINISTRATOR, Permissions.FLAGS.MANAGE_GUILD]
     });
   }
 

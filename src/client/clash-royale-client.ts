@@ -96,12 +96,12 @@ export class ClashRoyaleClient extends Client {
     this.logger.info(`Guild ${guild.name} is currently unavailable`);
   }
 
-  private onDiscordWarning(info: string): void {
-    this.logger.warn(`Discord warning: ${info}`);
+  private onDiscordWarning(info: {}): void {
+    this.logger.warn('Discord warning: ', info);
   }
 
   private onDiscordError(info: string): void {
-    this.logger.warn(`Discord warning: ${info}`);
+    this.logger.warn('Discord error: ', info);
   }
 
   private async onPause(): Promise<void> {
